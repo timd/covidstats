@@ -16,11 +16,11 @@ jobs:
     # Use Web Request Action to fetch data
     - name: Get current date
       id: current_date
-      run: echo "::set-output name=current_date::$(date +'%Y-%m-%d')"
+      run: echo "{current_date}={$(date +'%Y-%m-%d')}" >> $GITHUB_OUTPUT
 
     - name: Get date from 5 days ago
       id: five_days_ago
-      run: echo "::set-output name=fiveDaysAgo::$(date -d '5 days ago' +'%Y-%m-%d')"
+      run: echo "{fiveDaysAgo}={$(date -d '5 days ago' +'%Y-%m-%d')}" >> $GITHUB_OUTPUT
 
     - name: Use date in a shell command
       run: echo "Today's date is ${{ steps.current_date.outputs.current_date }}"
