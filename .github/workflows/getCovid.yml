@@ -25,13 +25,13 @@ jobs:
         SELECTED_COLOR: ${{ steps.color-selector.outputs.SELECTED_COLOR }}
       run: echo "The selected color is $SELECTED_COLOR"
 
-    - name: Get current date
+    - name: Set current date
       id: set_current_date
-      run: echo "CURRENT_DATE={$(date +'%Y-%m-%d')}" >> "$GITHUB_OUTPUT"
+      run: echo "CURRENT_DATE=$(date +'%Y-%m-%d')" >> "$GITHUB_OUTPUT"
     
-    - name: Get date from 5 days ago
+    - name: Set date from 5 days ago
       id: five_days_ago
-      run: echo "FIVE_DAYS_AGO={$(date -d '5 days ago' +'%Y-%m-%d')}" >> "$GITHUB_OUTPUT"
+      run: echo "FIVE_DAYS_AGO=$(date -d '5 days ago' +'%Y-%m-%d')" >> "$GITHUB_OUTPUT"
 
     - name: Print current date
       env:
