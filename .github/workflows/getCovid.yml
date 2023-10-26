@@ -33,18 +33,6 @@ jobs:
         FIVE_DAYS_AGO: ${{ steps.five_days_ago.outputs.FIVE_DAYS_AGO }}
       run: echo "5 days ago's date is $FIVE_DAYS_AGO"
 
-    - name: Create POST payload
-      id: post_payload
-      env:
-        CURRENT_DATE: ${{ steps.set_current_date.outputs.CURRENT_DATE }}
-        FIVE_DAYS_AGO: ${{ steps.five_days_ago.outputs.FIVE_DAYS_AGO }}
-      run: echo "POST_PAYLOAD=foobar" >> "$GITHUB_OUTPUT"
-
-    - name: Print post payload
-      env:
-        POST_PAYLOAD: ${{ steps.post_payload.outputs.POST_PAYLOAD }}
-      run: echo "5 days ago's date is $POST_PAYLOAD"
-
     # Use Web Request Action to fetch data
       
     - name: Fetch latest data using Web Request Action
@@ -55,7 +43,7 @@ jobs:
       with:
         url: https://api.hygiene-monitor.de/openData/getCovidOpenDataByDateRange
         method: POST
-        payload:  ${{ steps.post_payload.outputs.POST_PAYLOAD }}
+        payload:  '{"extraction_date_start": "${{ steps.five_days_ago.outputs.FIVE_DAYS_AGO }}"}'
         
     # Save the response content to a file
     - name: Echo response
