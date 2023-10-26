@@ -24,9 +24,9 @@ jobs:
         
     # Save the response content to a file
     - name: Echo response
-      run: echo '${{ steps.fetchdata.outputs.content }}' 
+      run: echo '${{ steps.fetchdata.outputs.output }}' 
     - name: Save response to incidents.json
-      run: echo '${{ steps.fetchdata.outputs.content }}' > covidStats.json
+      run: echo '${{ steps.fetchdata.outputs.output }}' > covidStats.json
     - name: Commit and push if it changed
       run: |-
         git config user.name "Automated"
