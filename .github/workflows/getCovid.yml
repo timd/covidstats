@@ -39,7 +39,7 @@ jobs:
         CURRENT_DATE: ${{ steps.set_current_date.outputs.CURRENT_DATE }}
         FIVE_DAYS_AGO: ${{ steps.five_days_ago.outputs.FIVE_DAYS_AGO }}
       run: |
-        echo "POST_PAYLOAD="{\"extraction_date_start\": \"2023-09-21\",\"extraction_date_end\": \"2023-10-22\"}" >> "$GITHUB_OUTPUT"
+        echo 'POST_PAYLOAD={"extraction_date_start": "2023-09-21","extraction_date_end": "2023-10-22"}' >> "$GITHUB_OUTPUT"
 
     # Use Web Request Action to fetch data
       
