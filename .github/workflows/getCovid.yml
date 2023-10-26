@@ -34,4 +34,4 @@ jobs:
         git add -A
         timestamp=$(date -u)
         git commit -m "Latest data: ${timestamp}" || exit 0
-        git push https://${{ secrets.REPO_ACCESS_TOKEN }}@github.com/timd/covidstats.git HEAD:master
+        git push https://${{ secrets.REPO_ACCESS_TOKEN }}@github.com/timd/covidstats.git HEAD:main
