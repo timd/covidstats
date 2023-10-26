@@ -24,14 +24,14 @@ jobs:
         CURRENT_DATE: ${{ steps.set_current_date.outputs.CURRENT_DATE }}
       run: echo "Today's date is ${{ steps.set_current_date.outputs.CURRENT_DATE }}"
     
-    - name: Set date from 5 days ago
+    - name: Set date from 3 days ago
       id: five_days_ago
-      run: echo "FIVE_DAYS_AGO=$(date -d '5 days ago' +'%Y-%m-%d')" >> "$GITHUB_OUTPUT"
+      run: echo "THREE_DAYS_AGO=$(date -d '3 days ago' +'%Y-%m-%d')" >> "$GITHUB_OUTPUT"
 
-    - name: Print five days ago
+    - name: Print three days ago
       env:
-        FIVE_DAYS_AGO: ${{ steps.five_days_ago.outputs.FIVE_DAYS_AGO }}
-      run: echo "5 days ago's date is $FIVE_DAYS_AGO"
+        THREE_DAYS_AGO: ${{ steps.five_days_ago.outputs.THREE_DAYS_AGO }}
+      run: echo "3 days ago's date is $THREE_DAYS_AGO"
 
     # Use Web Request Action to fetch data
       
@@ -41,7 +41,7 @@ jobs:
       with:
         url: https://api.hygiene-monitor.de/openData/getCovidOpenDataByDateRange
         method: POST
-        payload:  '{"extraction_date_start": "${{ steps.five_days_ago.outputs.FIVE_DAYS_AGO }}","extraction_date_end": "2023-10-22"}'
+        payload:  '{"extraction_date_start": "${{ steps.three_days_ago.outputs.THREE_DAYS_AGO }}","extraction_date_end": "${{ steps.set_current_date.outputs.CURRENT_DATE }}"}'
         
     # Save the response content to a file
     - name: Echo response
