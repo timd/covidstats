@@ -14,13 +14,23 @@ jobs:
       uses: actions/checkout@v2
 
     # Use Web Request Action to fetch data
+
+    - name: Set color
+      id: color-selector
+      run: echo "SELECTED_COLOR=green" >> "$GITHUB_OUTPUT"
+      
+    - name: Get color
+      env:
+        SELECTED_COLOR: ${{ steps.color-selector.outputs.SELECTED_COLOR }}
+        run: echo "The selected color is $SELECTED_COLOR"
+    
     - name: Get current date
       id: current_date
-      run: echo "{current_date}={$(date +'%Y-%m-%d')}" >> $GITHUB_OUTPUT
-
+      run: echo "{current_date}={$(date +'%Y-%m-%d')}" >> "$GITHUB_OUTPUT"
+    
     - name: Get date from 5 days ago
       id: five_days_ago
-      run: echo "{fiveDaysAgo}={$(date -d '5 days ago' +'%Y-%m-%d')}" >> $GITHUB_OUTPUT
+      run: echo "{fiveDaysAgo}={$(date -d '5 days ago' +'%Y-%m-%d')}" >> "$GITHUB_OUTPUT"
 
     - name: Use date in a shell command
       run: echo "Today's date is ${{ steps.current_date.outputs.current_date }}"
