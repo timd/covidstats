@@ -26,22 +26,22 @@ jobs:
       run: echo "The selected color is $SELECTED_COLOR"
 
     - name: Get current date
-      id: current_date
-      run: echo "{CURRENT_DATE}={$(date +'%Y-%m-%d')}" >> "$GITHUB_OUTPUT"
+      id: set_current_date
+      run: echo "CURRENT_DATE={$(date +'%Y-%m-%d')}" >> "$GITHUB_OUTPUT"
     
     - name: Get date from 5 days ago
       id: five_days_ago
-      run: echo "{FIVE_DAYS_AGO}={$(date -d '5 days ago' +'%Y-%m-%d')}" >> "$GITHUB_OUTPUT"
+      run: echo "FIVE_DAYS_AGO={$(date -d '5 days ago' +'%Y-%m-%d')}" >> "$GITHUB_OUTPUT"
 
     - name: Print current date
       env:
-        CURRENT_DATE: ${{ steps.current_date.outputs.CURRENT_DATE }}
-      run: echo "Today's date is ${{ steps.current_date.outputs.current_date }}"
+        CURRENT_DATE: ${{ steps.set_current_date.outputs.CURRENT_DATE }}
+      run: echo "Today's date is $CURRENT_DATE"
 
     - name: Print five days ago
       env:
-        FIVE_DAYS_AGO: ${{ steps.current_date.outputs.FIVE_DAYS_AGO }}
-      run: echo "5 days ago's date is ${{ steps.five_days_ago.outputs.FIVE_DAYS_AGO }}"
+        FIVE_DAYS_AGO: ${{ steps.five_days_ago.outputs.FIVE_DAYS_AGO }}
+      run: echo "5 days ago's date is $FIVE_DAYS_AGO"
       
     - name: Fetch latest data using Web Request Action
       id: fetchdata
