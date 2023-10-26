@@ -12,9 +12,21 @@ jobs:
     steps:
     - name: Check out this repo
       uses: actions/checkout@v2
-    - name: Fetch latest data
-      run: |-
-        curl https://www.fire.ca.gov/umbraco/Api/IncidentApi/GetIncidents | jq . > incidents.json
+
+    # Use Web Request Action to fetch data
+    - name: Fetch latest data using Web Request Action
+      id: fetchdata
+      uses: fjogeleit/web-request-action@v1
+      with:
+        url: 'https://api.hygiene-monitor.de/openData/getCovidOpenDataByDateRange '
+        method: 'POST'
+        payload: '{"extraction_date_start": "2023-09-21","extraction_date_end": "2023-10-22"}'
+        responseType: 'json' # Assuming you want the response as JSON
+
+    # Save the response content to a file
+    - name: Save response to incidents.json
+      run: echo '${{ steps.fetchdata.outputs.content }}' > covidStats.json
+
     - name: Commit and push if it changed
       run: |-
         git config user.name "Automated"
