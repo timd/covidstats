@@ -41,6 +41,11 @@ jobs:
       run: |
         echo 'POST_PAYLOAD={"extraction_date_start": "2023-09-21","extraction_date_end": "2023-10-22"}' >> "$GITHUB_OUTPUT"
 
+    - name: Print post payload
+      env:
+        POST_PAYLOAD: ${{ steps.post_payload.outputs.POST_PAYLOAD }}
+      run: echo "5 days ago's date is $POST_PAYLOAD"
+
     # Use Web Request Action to fetch data
       
     - name: Fetch latest data using Web Request Action
@@ -51,7 +56,7 @@ jobs:
       with:
         url: https://api.hygiene-monitor.de/openData/getCovidOpenDataByDateRange
         method: POST
-        payload: $POST_PAYLOAD
+        payload:  ${{ steps.post_payload.outputs.POST_PAYLOAD }}
         
     # Save the response content to a file
     - name: Echo response
