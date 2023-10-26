@@ -38,12 +38,10 @@ jobs:
     - name: Fetch latest data using Web Request Action
       id: fetchdata
       uses: satak/webrequest-action@master
-      env:
-        POST_PAYLOAD: ${{ steps.post_payload.outputs.POST_PAYLOAD }}
       with:
         url: https://api.hygiene-monitor.de/openData/getCovidOpenDataByDateRange
         method: POST
-        payload:  '{"extraction_date_start": "${{ steps.five_days_ago.outputs.FIVE_DAYS_AGO }}"}'
+        payload:  '{"extraction_date_start": "${{ steps.five_days_ago.outputs.FIVE_DAYS_AGO }}","extraction_date_end": "2023-10-22"}'
         
     # Save the response content to a file
     - name: Echo response
