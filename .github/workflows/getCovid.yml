@@ -23,9 +23,10 @@ jobs:
         payload: '{"extraction_date_start": "2023-09-21","extraction_date_end": "2023-10-22"}'
         
     # Save the response content to a file
+    - name: Echo response
+      run: echo '${{ steps.fetchdata.outputs.content }}' 
     - name: Save response to incidents.json
       run: echo '${{ steps.fetchdata.outputs.content }}' > covidStats.json
-
     - name: Commit and push if it changed
       run: |-
         git config user.name "Automated"
@@ -34,5 +35,3 @@ jobs:
         timestamp=$(date -u)
         git commit -m "Latest data: ${timestamp}" || exit 0
         git push https://${{ secrets.REPO_ACCESS_TOKEN }}@github.com/timd/covidstats.git HEAD:master
-
-
