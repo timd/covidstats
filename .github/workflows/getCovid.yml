@@ -25,7 +25,7 @@ jobs:
       run: echo "Today's date is ${{ steps.set_current_date.outputs.CURRENT_DATE }}"
     
     - name: Set date from 3 days ago
-      id: five_days_ago
+      id: three_days_ago
       run: echo "THREE_DAYS_AGO=$(date -d '3 days ago' +'%Y-%m-%d')" >> "$GITHUB_OUTPUT"
 
     - name: Print three days ago
