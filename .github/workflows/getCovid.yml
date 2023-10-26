@@ -13,43 +13,45 @@ jobs:
     - name: Check out this repo
       uses: actions/checkout@v2
 
-    # Use Web Request Action to fetch data
-
-    - name: Set color
-      id: color-selector
-      run: echo "SELECTED_COLOR=green" >> "$GITHUB_OUTPUT"
-    
-    - name: Get color
-      id: echo_color
-      env:
-        SELECTED_COLOR: ${{ steps.color-selector.outputs.SELECTED_COLOR }}
-      run: echo "The selected color is $SELECTED_COLOR"
+    # Set params for request
 
     - name: Set current date
       id: set_current_date
       run: echo "CURRENT_DATE=$(date +'%Y-%m-%d')" >> "$GITHUB_OUTPUT"
-    
-    - name: Set date from 5 days ago
-      id: five_days_ago
-      run: echo "FIVE_DAYS_AGO=$(date -d '5 days ago' +'%Y-%m-%d')" >> "$GITHUB_OUTPUT"
 
     - name: Print current date
       env:
         CURRENT_DATE: ${{ steps.set_current_date.outputs.CURRENT_DATE }}
       run: echo "Today's date is $CURRENT_DATE"
+    
+    - name: Set date from 5 days ago
+      id: five_days_ago
+      run: echo "FIVE_DAYS_AGO=$(date -d '5 days ago' +'%Y-%m-%d')" >> "$GITHUB_OUTPUT"
 
     - name: Print five days ago
       env:
         FIVE_DAYS_AGO: ${{ steps.five_days_ago.outputs.FIVE_DAYS_AGO }}
       run: echo "5 days ago's date is $FIVE_DAYS_AGO"
+
+    - name: Create POST payload
+      id: post_payload
+      env:
+        CURRENT_DATE: ${{ steps.set_current_date.outputs.CURRENT_DATE }}
+        FIVE_DAYS_AGO: ${{ steps.five_days_ago.outputs.FIVE_DAYS_AGO }}
+      run: |
+        echo "POST_PAYLOAD="{\"extraction_date_start\": \"2023-09-21\",\"extraction_date_end\": \"2023-10-22\"}" >> "$GITHUB_OUTPUT"
+
+    # Use Web Request Action to fetch data
       
     - name: Fetch latest data using Web Request Action
       id: fetchdata
       uses: satak/webrequest-action@master
+      env:
+        POST_PAYLOAD: ${{ steps.post_payload.outputs.POST_PAYLOAD }}
       with:
         url: https://api.hygiene-monitor.de/openData/getCovidOpenDataByDateRange
         method: POST
-        payload: '{"extraction_date_start": "2023-09-21","extraction_date_end": "2023-10-22"}'
+        payload: $POST_PAYLOAD
         
     # Save the response content to a file
     - name: Echo response
